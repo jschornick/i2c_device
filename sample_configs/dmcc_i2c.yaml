@@ -1,0 +1,77 @@
+name: Dual Motor Control Cape
+url: "https://github.com/Exadler/DMCC_Library"
+version: 6
+address: [0x2c,0x2d,0x2e,0x2f]
+
+registers:
+    0x00:    
+      name: Status
+      description: System status
+      access: [read]
+      type: bitfield
+      bits: 
+        0:
+            length: 2
+            name: ModeMotor1
+            values:
+                 00: Power
+                 01: PID Position
+                 10: PID Speed
+                 11: Fault
+        2:
+            length: 2
+            name: ModeMotor2
+            values:
+                 00: Power
+                 01: PID Position
+                 10: PID Speed
+                 11: Fault
+    0x01:    
+        name: Polarity
+        description: Not used?
+        access: [read] 
+    0x02:
+        name: PowerMotor1
+        description: Power level for motor 1
+        type: int16
+        access: [read,write]
+        min: -10000
+        max: 10000
+        default: 0
+    0x04:
+        name: PowerMotor2
+        description: Power level for motor 2
+        type: int16
+        access: [read,write]
+        min: -10000
+        max: 10000
+        default: 0
+    0x06:
+        name: Voltage
+        description: Supply voltage
+        type: int16
+        access: [read]
+    0x10:
+        name: QEI1Position
+        description: Position according the first quadrature encoder input
+        type: int32
+        access: [read]
+    0x18:
+        name: QEI1Velocity
+        type: int16
+        access: read
+    0xff:
+        name: Execute
+        description: Execute   refresh controller
+        type: int16
+        access: [write]
+        values:
+             0x00: Refresh
+             0x01: Set_Motor1_Power
+             0x02: Set_Motor2_Power
+             0x03: Set_Motor_Power
+        default: 0
+        
+meta:       
+  i2c_ddl_version: 1
+

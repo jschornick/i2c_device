@@ -38,12 +38,15 @@ reg.write(0)
 print "Read from reg: ", reg.read()
 print
 
-print "Battery voltage:", dev.registers['Voltage'].read()/1000.0
-print
+t0 = time.time()
 while True:
   #dev.registers['Execute'].write_val('Refresh')
+  elapsed = time.time() - t0
   dev.registers['Execute'].write(0x00)
-  print "QEI 1:", dev.registers['QEI1Velocity'].read()
+  pos1 = dev.registers['QEI1Position'].read()
+  vel1 = dev.registers['QEI1Velocity'].read()
+  voltage = dev.registers['Voltage'].read()/1000.0
+  print "{:8.3f} QEI 1: Voltage: {},  Pos {}, Vel {}".format(elapsed, voltage, pos1, vel1)
 
 
 

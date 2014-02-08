@@ -1,7 +1,7 @@
 name: Dual Motor Control Cape
 url: "https://github.com/Exadler/DMCC_Library"
 version: 6
-address: [0x2c,0x2d,0x2e,0x2f]
+addresses: [0x2c,0x2d,0x2e,0x2f]
 
 registers:
     0x00:    
@@ -9,23 +9,24 @@ registers:
       description: System status
       access: [read]
       type: bitfield
+      writemask: 0x0f
       bits: 
-        0:
+        1:  # [1:0]
             length: 2
             name: ModeMotor1
             values:
-                 00: Power
-                 01: PID Position
-                 10: PID Speed
-                 11: Fault
-        2:
+                 0b00: Power
+                 0b01: Position
+                 0b10: Velocity
+                 0b11: Fault
+        3:  # [3:2]
             length: 2
             name: ModeMotor2
             values:
-                 00: Power
-                 01: PID Position
-                 10: PID Speed
-                 11: Fault
+                 0b00: Power
+                 0b01: Position
+                 0b10: Velocity
+                 0b11: Fault
     0x01:    
         name: Polarity
         description: Not used?
@@ -62,14 +63,26 @@ registers:
         access: read
     0xff:
         name: Execute
-        description: Execute   refresh controller
-        type: int16
+        description: Execute changes and refresh
+        type: int8
         access: [write]
         values:
-             0x00: Refresh
-             0x01: Set_Motor1_Power
-             0x02: Set_Motor2_Power
-             0x03: Set_Motor_Power
+            0x00: Refresh
+            0x01: Set_Motor1_Power
+            0x02: Set_Motor2_Power
+            0x03: Set_Motor_Power
+            0x11: Set_Motor1_Position
+            0x12: Set_Motor2_Position
+            0x13: Set_Motor_Position
+            0x21: Set_Motor1_Speed
+            0x22: Set_Motor2_Speed
+            0x23: Set_Motor_Speed
+            0x30: Clear_QEI1
+            0x31: Clear_QEI2
+            0x32: Clear_QEI
+            0x41: EEPROM_Read_Write
+            0x42: EEPROM_Read_Only
+            0xff: Set_Motor_Power_Alt
         default: 0
         
 meta:       

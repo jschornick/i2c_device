@@ -1,0 +1,119 @@
+name: LSM303DLHC 3D accelerometer and 3D magnetometer
+addresses: [0x19]
+
+registers:
+    0x20:
+        name: CTRL_REG1_A
+        access: [read,write]
+        description: Control Register 1A
+        type: bitfield
+        default: 0b00000111
+        bits:
+            7:  # 7-4
+                length: 4
+                name: ODR
+                description: Data Rate
+                values:
+                    0b0000: PowerDown
+                    0b0001: 1Hz
+                    0b0010: 10Hz
+                    0b0011: 25Hz
+                    0b0100: 50Hz
+                    0b0101: 100Hz
+                    0b0110: 200Hz
+                    0b0111: 400Hz
+                    0b1000: 1620Hz
+                    0b1001: 5376Hz
+            3:
+                length: 1
+                name: LPen
+                description: Low Power Enable
+                values:
+                    0: Disabled
+                    1: Enabled
+            2:
+                length: 1
+                name: Zen
+                description: Z-axis enable
+                values:
+                    0: Disabled
+                    1: Enabled
+            1:
+                length: 1
+                name: Yen
+                description: Y-axis enable
+                values:
+                    0: Disabled
+                    1: Enabled
+            0:
+                length: 1
+                name: Xen
+                description: X-axis enable
+                values:
+                    0: Disabled
+                    1: Enabled
+
+    0x21:
+        name: CTRL_REG2_A
+        access: [read,write]
+        default: 0b00000000
+    0x22:
+        name: CTRL_REG3_A
+        access: [read,write]
+        default: 0b00000000
+    0x23:
+        name: CTRL_REG4_A
+        access: [read,write]
+        default: 0b00000000
+    0x24:
+        name: CTRL_REG5_A
+        access: [read,write]
+        default: 0b00000000
+    0x25:
+        name: CTRL_REG6_A
+        access: [read,write]
+        default: 0b00000000
+    0x26:
+        name: REFERENCE_A
+        access: [read,write]
+        default: 0b00000000
+    0x26:
+        name: STATUS_REG_A
+        access: [read]
+        default: 0b00000000
+
+    0x28:
+        name: OUT_X_A
+        description: X-axis acceleration data
+        type: int16
+        acess: [read]
+    0x2a:
+        name: OUT_Y_A
+        description: Y-axis acceleration data
+        type: int16
+        acess: [read]
+    0x2c:
+        name: OUT_Z_A
+        description: Y-axis acceleration data
+        type: int16
+        acess: [read]
+
+#FIFO_CTRL_REG_A, rw, 0x2E, 0101110, 00000000
+#FIFO_SRC_REG_A, r, 0x2F, 0101111, 
+#INT1_CFG_A, rw, 0x30, 0110000, 00000000
+#INT1_SOURCE_A, r, 0x31, 0110001, 00000000
+#INT1_THS_A, rw, 0x32, 0110010, 00000000
+#INT1_DURATION_A, rw, 0x33, 0110011, 00000000
+#INT2_CFG_A, rw, 0x34, 0110100, 00000000
+#INT2_SOURCE_A, r, 0x35, 0110101, 00000000
+#INT2_THS_A, rw, 0x36, 0110110, 00000000
+#INT2_DURATION_A, rw, 0x37, 0110111, 00000000
+#CLICK_CFG_A, rw, 0x38, 0111000, 00000000
+#CLICK_SRC_A, rw, 0x39, 0111001, 00000000
+#CLICK_THS_A, rw, 0x3A, 0111010, 00000000
+#TIME_LIMIT_A, rw, 0x3B, 0111011, 00000000
+#TIME_LATENCY_A, rw, 0x3C, 0111100, 00000000
+#TIME_WINDOW_A, rw, 0x3D, 0111101, 00000000
+# Reserved, 3E
+# Reserved, 3F
+

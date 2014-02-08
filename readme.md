@@ -38,7 +38,7 @@ Out[4]:
  'OUT_Y_A': <i2c_device.i2c_device.IntReg at 0x68b3d0>,
  'OUT_Z_A': <i2c_device.i2c_device.IntReg at 0x68b4d0>,
 
-In [5]: ctrl_reg = mydevice.register['CTRL_REG1_A']
+In [5]: ctrl_reg = mydevice.registers['CTRL_REG1_A']
 
 In [6]: ctrl_reg.write('ODR','10Hz')
 

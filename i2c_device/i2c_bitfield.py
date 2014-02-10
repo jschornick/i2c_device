@@ -53,15 +53,15 @@ class BitfieldReg(I2CRegister):
             value = self.bits[bit]['value_names'][value]
         length = self.bits[bit]['length'] 
         lowbit = bit-length+1
-        print "Writing {:08b} on bits {} to {})".format(value, bit, lowbit)
+        #print "Writing {:08b} on bits {} to {})".format(value, bit, lowbit)
         new = value << lowbit
         # merge the new with the old
         if merge:
             old = self.read_byte()
             mergemask = ((1<<length)-1) << lowbit
-            print "Merging {:08b} with {:08b} using mask {:08b}".format(new, old, mergemask)
+            #print "Merging {:08b} with {:08b} using mask {:08b}".format(new, old, mergemask)
             # clear bits in old and OR in the new ones
             new = (old & (0xff ^ mergemask)) | new
         new &= self.mask
-        print "Masked with {:08b} => {:08b}".format(self.mask, new)
+        #print "Masked with {:08b} => {:08b}".format(self.mask, new)
         self.write_byte(new)

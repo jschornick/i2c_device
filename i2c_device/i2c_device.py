@@ -10,11 +10,12 @@ class I2CDevice(object):
 
     def __init__(self, bus, address, config=None):
         self.busnum = bus
-        try:
-            self.bus = smbus.SMBus(bus)
-        except IOError as e:
-            self.bus = None
-            print "Could not open I2C bus {}: {}".format(bus,e)
+        if bus is not None:
+            try:
+                self.bus = smbus.SMBus(bus)
+            except IOError as e:
+                self.bus = None
+                print "Could not open I2C bus {}: {}".format(bus,e)
         self.address = address
         if config:
             with file(config) as f:

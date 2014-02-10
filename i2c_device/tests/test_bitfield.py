@@ -8,10 +8,7 @@ from i2c_device import I2CDevice
 class TestInit(TestCase):
 
     def setUp(self):
-        try:
-            self.i2c = I2CDevice(0,0x01,config='tests/test.yaml')
-        except:
-            pass
+        self.i2c = I2CDevice(None,0x01,config='tests/test.yaml')
         self.bits = self.i2c.registers['TestBitfield'].bits
         self.bit_names = self.i2c.registers['TestBitfield'].bit_names
 
@@ -27,7 +24,7 @@ class TestInit(TestCase):
 class TestRead(TestCase):
 
     def setUp(self):
-        self.i2c = I2CDevice(0,0x01,config='tests/test.yaml')
+        self.i2c = I2CDevice(None,0x01,config='tests/test.yaml')
 
     def set_mock_value(self, val):
         self.i2c.read_byte = Mock(return_value = val)
@@ -59,7 +56,7 @@ class TestRead(TestCase):
 class TestWrite(TestCase):
 
     def setUp(self):
-        self.i2c = I2CDevice(0,0x01,config='tests/test.yaml')
+        self.i2c = I2CDevice(None,0x01,config='tests/test.yaml')
         self.i2c.write_byte = Mock()
 
     def set_mock_value(self, val):

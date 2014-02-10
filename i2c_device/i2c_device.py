@@ -2,9 +2,9 @@ import smbus
 import yaml
 
 from i2c_register import I2CRegister
-from integer import IntegerReg
-from string import StringReg
-from bitfield import BitfieldReg
+from i2c_integer import IntegerReg
+from i2c_string import StringReg
+from i2c_bitfield import BitfieldReg
 
 class I2CDevice(object):
 

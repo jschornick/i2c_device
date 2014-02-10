@@ -1,0 +1,54 @@
+name: Test Device
+addresses: [0x01]
+
+registers:
+    0x00:    
+        name: TestBitfield
+        description: A Bitfield
+        access: [read,write]
+        type: bitfield
+        bits: 
+            0:
+                length: 1
+                name: SingleBit
+                values:
+                     0: Zero
+                     1: One
+            2:  # [2:1]
+                length: 2
+                name: TwoBits
+                values: 
+                     0b00: Zero
+                     0b01: One
+                     0b10: Two
+                     0b11: Three
+            7:  # [7:4]
+                length: 4
+                name: FourBits
+                values: 
+                     0b0000: Zero
+                     0b0001: One
+                     0b0010: Two
+                     0b0011: Three
+
+    0x01:    
+        name: TestMaskedBitfield
+        description: A Bitfield with a write mask
+        access: [read,write]
+        type: bitfield
+        writemask: 0x0f
+        bits:
+            0:
+                length: 1
+                name: SingleBit
+                values:
+                     0: Zero
+                     1: One
+            7:  # [7:4]
+                length: 4
+                name: FourBits
+                values: 
+                     0b0000: Zero
+                     0b0001: One
+                     0b0010: Two
+                     0b0011: Three

@@ -1,7 +1,7 @@
 I2C Device
 ==========
 
-Let's say your new fancy-schancy accelerometer just came in the mail from
+Let's say your new fancy-schmancy accelerometer just came in the mail from
 _Bob's Sensor World_, and you're ready to start pulling data off that bad boy.
 You shopped carefully, and you know that your sensor supports I2C, so you load
 up the python-smbus library.  In a few short minutes, you're pulling off data.
@@ -9,7 +9,7 @@ What could be better?
 
 I love the convenience of I2C as much as the next guy, but compared to the
 quick victory describe above, the next few hours of hacking are usually not
-nearly as fun.  If there is no existing library for your sensor, the next step
+nearly so fun.  If there is no existing library for your sensor, the next step
 is all too often writing one from scratch... digging into page after page of 
 interface specs described in the device datasheet.
 
@@ -37,6 +37,8 @@ Out[4]:
  'OUT_X_A': <i2c_device.i2c_device.IntReg at 0x68bfd0>,
  'OUT_Y_A': <i2c_device.i2c_device.IntReg at 0x68b3d0>,
  'OUT_Z_A': <i2c_device.i2c_device.IntReg at 0x68b4d0>,
+ ...
+ }
 
 In [5]: ctrl_reg = mydevice.registers['CTRL_REG1_A']
 
@@ -63,6 +65,4 @@ are suboptimal or unintentionally limiting.  I'd like to believe we can
 maintain a certain amount of clarity/conciseness in the format while still
 supporting the diversity of I2C devices available.  The best way to find out is
 to start populating the libray of devices and see what problems arise.  
-
-
 

@@ -29,8 +29,35 @@ registers:
                  0b11: Fault
     0x01:    
         name: Polarity
-        description: Not used?
+        type: bitfield
+        description: Polarity??
         access: [read] 
+        bits: 
+            0:
+                length: 1
+                name: Motor1Dir
+                values:
+                     0: Normal
+                     1: Reverse
+            1:
+                length: 1
+                name: Motor2Dir
+                values:
+                     0: Normal
+                     1: Reverse
+            2:
+                length: 1
+                name: QEI1Dir
+                values:
+                     0: Normal
+                     1: Reverse
+            3:
+                length: 1
+                name: QEI2Dir
+                values:
+                     0: Normal
+                     1: Reverse
+
     0x02:
         name: PowerMotor1
         description: Power level for motor 1
@@ -57,10 +84,129 @@ registers:
         description: Position according the first quadrature encoder input
         type: int32
         access: [read]
+    0x14:
+        name: QEI2Position
+        description: Position according the second quadrature encoder input
+        type: int32
+        access: [read]
     0x18:
         name: QEI1Velocity
         type: int16
-        access: read
+        access: [read]
+    0x1a:
+        name: QEI2Velocity
+        type: int16
+        access: [read]
+    0x1c:
+        name: CurrentMotor1
+        description: Current through motor 1
+        type: uint16
+        access: [read]
+    0x1e:
+        name: CurrentMotor2
+        description: Current through motor 2
+        type: uint16
+        access: [read]
+
+    0x20:
+        name: TargetPosition1
+        description: Encoder 1 target when PID controller is in position mode
+        type: int32
+        access: [read,write]
+    0x24:
+        name: TargetPosition2
+        description: Encoder 2 target when PID controller is in position mode
+        type: int32
+        access: [read,write]
+    0x28:
+        name: TargetVelocity1
+        description: Encoder 1 target when PID controller is in velocity mode
+        type: int16
+        access: [read,write]
+    0x2a:
+        name: TargetVelocity2
+        description: Encoder 2 target when PID controller is in velocity mode
+        type: int16
+        access: [read,write]
+
+    0x2c:
+        name: PID1Error
+        description: Error from PID calcuations
+        type: int16
+        access: [read]
+    0x2e:
+        name: PID2Error
+        description: Error from PID calcuations
+        type: int16
+        access: [read]
+
+    0x30:
+        name: Pos1Kp
+        description: Proportional parameter for PID controller 1 in position mode
+        type: int16
+        access: [read,write]
+    0x32:
+        name: Pos1Ki
+        description: Integral parameter for PID controller 1 in position mode
+        type: int16
+        access: [read,write]
+    0x34:
+        name: Pos1Kd
+        description: Derivative parameter for PID controller 1 in position mode
+        type: int16
+        access: [read,write]
+    0x36:
+        name: Vel1Kp
+        description: Proportional parameter for PID controller 1 in velocity mode
+        type: int16
+        access: [read,write]
+    0x38:
+        name: Vel1Ki
+        description: Integral parameter for PID controller 1 in velocity mode
+        type: int16
+        access: [read,write]
+    0x3a:
+        name: Vel1Kd
+        description: Derivative parameter for PID controller 1 in velocity mode
+        type: int16
+        access: [read,write]
+
+    0x40:
+        name: Pos2Kp
+        description: Proportional parameter for PID controller 2 in position mode
+        type: int16
+        access: [read,write]
+    0x42:
+        name: Pos2Ki
+        description: Integral parameter for PID controller 2 in position mode
+        type: int16
+        access: [read,write]
+    0x44:
+        name: Pos2Kd
+        description: Derivative parameter for PID controller 2 in position mode
+        type: int16
+        access: [read,write]
+    0x46:
+        name: Vel2Kp
+        description: Proportional parameter for PID controller 2 in velocity mode
+        type: int16
+        access: [read,write]
+    0x48:
+        name: Vel2Ki
+        description: Integral parameter for PID controller 2 in velocity mode
+        type: int16
+        access: [read,write]
+    0x4a:
+        name: Vel2Kd
+        description: Derivative parameter for PID controller 2 in velocity mode
+        type: int16
+        access: [read,write]
+
+    0xe0:  # 0xe0 - 0xef
+        name: CapeId
+        type: string
+        length: 16
+
     0xff:
         name: Execute
         description: Execute changes and refresh

@@ -1,0 +1,126 @@
+name: Color Light-to-Digital Converter
+url: "https://github.com/Exadler/DMCC_Library"
+addresses: [0x29]
+
+registers:
+    0x00:    
+      name: ENABLE
+      description: Enable states and interrupts
+      access: [read,write]
+      type: bitfield
+      writemask: 0b00011011
+      bits: 
+        0:
+            length: 1
+            name: PON
+            description: Oscillator power
+            values:
+                0: Disable
+                1: Enable
+        1:
+            length: 1
+            name: AEN
+            description: RBBC enable
+            values:
+                0: Disable
+                1: Enable
+        2:
+            length: 1
+            name: Reserved2
+            values:
+                0: Default
+        3:
+            length: 1
+            name: WEN
+            description: Wait Enable
+            values:
+                0: Disable
+                1: Enable
+        4:
+            length: 1
+            name: AIEN
+            description: RGBC interrupt enable
+            values:
+                0: Disable
+                1: Enable
+        5:
+            length: 3
+            name: Reserved5
+            values:
+                0b000: Default
+
+    0x01:    
+        name: ATIME
+        description: RGBC Timing (inverted)
+        access: [read] 
+        type: uint8
+    0x03: 
+        name: WTIME
+        access: [read,write]
+        description: Wait Time (inverted)
+        access: [read] 
+        type: uint8
+    0x04: 
+        name: AILTL
+        access: [read,write]
+        type: uint8
+    0x05: 
+        name: AILTH
+        access: [read,write]
+        type: uint8
+    0x06: 
+        name: AIHTL
+        access: [read,write]
+        type: uint8
+    0x07: 
+        name: AIHTH
+        access: [read,write]
+        type: uint8
+    0x0c: 
+        name: PERS
+        access: [read,write]
+    0x0d: 
+        name: CONFIG
+        access: [read,write]
+    0x0f: 
+        name: CONTROL
+        access: [read,write]
+        type: bitfield
+        writemask: 0b00011011
+        bits: 
+            0:
+                length: 1
+    0x12:
+        name: ID
+        access: [read]
+    0x13:
+        name: STATUS
+        access: [read]
+    0x14:
+        name: CDATAL
+        access: [read]
+    0x15:
+        name: CDATLH
+        access: [read]
+    0x16:
+        name: RDATAL
+        access: [read]
+    0x17:
+        name: RDATAH
+        access: [read]
+    0x18:
+        name: GDATAL
+        access: [read]
+    0x19:
+        name: GDATAH
+        access: [read]
+    0x1a:
+        name: BDATAL
+        access: [read]
+    0x1b:
+        name: BDATAH
+        access: [read]
+
+meta:       
+  i2c_ddl_version: 1
+

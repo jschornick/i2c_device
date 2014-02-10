@@ -34,6 +34,19 @@ reg.write(0)
 print "Read from reg: ", reg.read()
 print
 
+pos1 = dev.registers['QEI1Position'].read()
+print "QEI1 Pos before reset:", pos1
+dev.registers['Execute'].write('Clear_QEI1')
+pos1 = dev.registers['QEI1Position'].read()
+print "QEI1 Pos after reset:", pos1
+print
+
+id = dev.registers['CapeId'].read()
+print "CapeId: '%s' (len: %d)" % (id, len(id))
+for i in id:
+    print "{:#04x}".format(ord(i)),
+print "\n"
+
 t0 = time.time()
 while True:
   elapsed = time.time() - t0

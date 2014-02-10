@@ -29,8 +29,12 @@ class I2CDevice(object):
                 reg_type = None
             if reg_type in ['int8', 'int16', 'int32']:
                 self.registers[name] = IntReg(self,reg_addr,reg_conf)
+            elif reg_type in ['uint8', 'uint16', 'uint32']:
+                self.registers[name] = IntReg(self,reg_addr,reg_conf,signed=False)
             elif reg_type == 'bitfield':
                 self.registers[name] = BitfieldReg(self,reg_addr,reg_conf)
+            elif reg_type == 'string':
+                self.registers[name] = StringReg(self,reg_addr,reg_conf)
             else:
                 print "WARNING: No type specified for {:#04x}".format(reg_addr)
                 self.registers[name] = I2CRegister(self.bus,reg_addr,reg_conf)
@@ -71,7 +75,7 @@ class I2CRegister(object):
 
 # TODO: make into properties if we can still call write_val()
 class IntReg(I2CRegister):
-    """ 8, 6, and 32 bit signed ints """
+    """ 8, 6, and 32 bit signed/unsigned ints """
     def __init__(self, bus, addr, conf, signed = True):
         I2CRegister.__init__(self, bus, addr, conf)
         if signed:
@@ -142,6 +146,13 @@ class BitfieldReg(I2CRegister):
         return value
 
     def write(self, bit, value, merge=True):
+        """ 
+        Write value starting at position bit (high to low)
+
+        When merge is set, first read the current value so that only the
+        specified bits will be changed.
+
+        """
         if type(bit) is str:
             bit = self.bit_names[bit]
         if type(value) is str:
@@ -160,4 +171,19 @@ class BitfieldReg(I2CRegister):
         new &= self.mask
         print "Masked with {:08b} => {:08b}".format(self.mask, new)
         self.write_byte(new)
+
+class StringReg(I2CRegister):
+    def __init__(self, bus, addr, conf):
+        I2CRegister.__init__(self, bus, addr, conf)
+        self.length = self.config['length']
+
+    def read(self):
+        value = ""
+        for i in range(self.length):
+            value += chr(self.read_byte(byte=i))
+        return value
+
+    def write(self, value):
+        for i in range(self.length):
+            self.write_byte(ord(value[i]),byte=i)
 

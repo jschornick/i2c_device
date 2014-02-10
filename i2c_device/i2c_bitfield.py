@@ -32,10 +32,11 @@ class BitfieldReg(I2CRegister):
         if type(bit) is str:
             bit = self.bit_names[bit]
         length = self.bits[bit]['length']
-        print "Reading at bit", bit, "(length = %d)" % length
+        #print "Reading at bit", bit, "(length = %d)" % length
         byte = self.read_byte()
-        print "Raw byte:", bin(byte)
-        value = (byte>>bit) & ((1<<length)-1)
+        #print "Raw byte:", bin(byte)
+        lowbit = bit-length+1
+        value = (byte>>lowbit) & ((1<<length)-1)
         return value
 
     def write(self, bit, value, merge=True):

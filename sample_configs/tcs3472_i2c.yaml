@@ -1,125 +1,238 @@
-name: Color Light-to-Digital Converter
+name: TCS3472 Color Light-to-Digital Converter
 url: "https://github.com/Exadler/DMCC_Library"
 addresses: [0x29]
 
+
+# SADDR : Slave address
+# CODE: Protocol mode (repeat,auto-inc,etc) and address
+#
+# Write: 
+#   SADDR+W, CODE, DATA, DATA, ...
+# Write (?): 
+#   (if data doesn't have high bit set, use register from last CODE) 
+#   SADDR+W, DATA, ...
+#
+# Read: (uses register address from last CODE)
+#   SADDR+R, DATA, DATA, ...
+#
+# Read (alt): (sets CODE before reading)
+#   SADDR+W, CODE, SADDR+R, DATA, DATA, ...
+#
+
+protocol:
+    # Why does multi byte-read work without auto_inc set in command byte mode?
+    multi: True
+
+command:
+    default: 0x80  # command select
+    7:
+        name: SELECT
+        length: 1
+        values:
+            0: DISABLE
+            1: ENABLE
+    6: # [6:5]
+        name: MODE
+        length: 2
+        values:
+            0b00: REPEAT
+            0b01: AUTO_INC
+            0b10: RESERVED
+            0b11: SPECIAL
+    4: # [4:0]
+        name: REGISTER
+
 registers:
     0x00:    
-      name: ENABLE
-      description: Enable states and interrupts
-      access: [read,write]
-      type: bitfield
-      writemask: 0b00011011
-      bits: 
-        0:
-            length: 1
-            name: PON
-            description: Oscillator power
-            values:
-                0: Disable
-                1: Enable
-        1:
-            length: 1
-            name: AEN
-            description: RBBC enable
-            values:
-                0: Disable
-                1: Enable
-        2:
-            length: 1
-            name: Reserved2
-            values:
-                0: Default
-        3:
-            length: 1
-            name: WEN
-            description: Wait Enable
-            values:
-                0: Disable
-                1: Enable
-        4:
-            length: 1
-            name: AIEN
-            description: RGBC interrupt enable
-            values:
-                0: Disable
-                1: Enable
-        5:
-            length: 3
-            name: Reserved5
-            values:
-                0b000: Default
-
-    0x01:    
-        name: ATIME
-        description: RGBC Timing (inverted)
-        access: [read] 
-        type: uint8
-    0x03: 
-        name: WTIME
-        access: [read,write]
-        description: Wait Time (inverted)
-        access: [read] 
-        type: uint8
-    0x04: 
-        name: AILTL
-        access: [read,write]
-        type: uint8
-    0x05: 
-        name: AILTH
-        access: [read,write]
-        type: uint8
-    0x06: 
-        name: AIHTL
-        access: [read,write]
-        type: uint8
-    0x07: 
-        name: AIHTH
-        access: [read,write]
-        type: uint8
-    0x0c: 
-        name: PERS
-        access: [read,write]
-    0x0d: 
-        name: CONFIG
-        access: [read,write]
-    0x0f: 
-        name: CONTROL
+        name: ENABLE
+        description: Enable states and interrupts
         access: [read,write]
         type: bitfield
         writemask: 0b00011011
         bits: 
+            7: # [7:5]
+                length: 3
+                name: Reserved_7
+                values:
+                    0b000: Default
+            4:
+                length: 1
+                name: AIEN
+                description: RGBC interrupt enable
+                values:
+                    0: Disable
+                    1: Enable
+            3:
+                length: 1
+                name: WEN
+                description: Wait Enable
+                values:
+                    0: Disable
+                    1: Enable
+            2:
+                length: 1
+                name: Reserved_2
+                values:
+                    0: Default
+            1:
+                length: 1
+                name: AEN
+                description: RGBC enable
+                values:
+                    0: Disable
+                    1: Enable
             0:
                 length: 1
+                name: PON
+                description: Oscillator power
+                values:
+                    0: Disable
+                    1: Enable
+
+    0x01:    
+        name: ATIME
+        description: RGBC Timing (internal integration time)
+        access: [read,write] 
+        type: int8
+        values:
+            0xff: 1
+            0xf6: 10
+            0xd5: 42
+            0xc0: 64
+            0x00: 256
+    0x03: 
+        name: WTIME
+        description: Wait Time (inverted)
+        access: [read,write]
+        access: [read] 
+        type: int8
+        values:
+            0xff: 1
+            0xab: 85
+            0x00: 256
+    0x04: 
+        name: AILT
+        description: RGBC clear channel low threshold
+        access: [read,write]
+        type: uint16
+    0x06: 
+        name: AIHT
+        description: RGBC clear channel high threshold
+        access: [read,write]
+        type: uint16
+    0x0c: 
+        name: PERS
+        description: Persistence (interrtupt filter)
+        access: [read,write]
+        type: bitfield
+        bits:
+            7:  # [7:4]
+                length: 4
+                name: PPERS
+                description: Reserved
+            3:  # [3:0]
+                length: 4
+                name: APERS
+                description: Number of consecutive trigger values before interrupt
+                values:
+                    0b0000: Every
+                    0b0001: 1
+                    0b0010: 2
+                    0b0011: 3
+                    0b0100: 5
+                    0b0101: 10
+                    0b0110: 15
+                    0b0111: 20
+                    0b1000: 25
+                    0b1001: 30
+                    0b1010: 35
+                    0b1011: 40
+                    0b1100: 45
+                    0b1101: 50
+                    0b1110: 55
+                    0b1111: 60
+
+    0x0d: 
+        name: CONFIG
+        description: Configure long wait time
+        access: [read,write]
+        type: bitfield
+        writemask: 0b00000010
+        bits:
+            7:  # [7:2]
+                length: 6
+                name: Reserved_7
+            1:  
+                length: 1
+                name: WLONG
+                values:
+                    0: Normal
+                    1: 12X
+            0:  
+                length: 1
+                name: Reserved_0
+
+    0x0f: 
+        name: CONTROL
+        description: Misc control, gain
+        access: [read,write]
+        type: bitfield
+        writemask: 0b00000011
+        bits: 
+            7:  # [7:2]
+                length: 6
+                name: Reserved_7
+            1:  # [1:0]
+                length: 2
+                name: Gain
+                value:
+                    0b00: 1X
+                    0b01: 4X
+                    0b10: 16X
+                    0b11: 60X
+
     0x12:
         name: ID
         access: [read]
+        type: uint8
+        values:
+            0x44: TCS34721_25
+            0x4d: TCS34723_27
+
     0x13:
         name: STATUS
         access: [read]
+        type: bitfield
+        bits: 
+            7:  # [7:5]
+                length: 3
+                name: Reserved_7
+            4:  
+                length: 1
+                name: AINT
+            3:  
+                length: 3
+                name: Reserved_3
+            0:  
+                length: 1
+                name: AVALID
+
     0x14:
-        name: CDATAL
+        name: CDATA
         access: [read]
-    0x15:
-        name: CDATLH
-        access: [read]
+        type: uint16
     0x16:
-        name: RDATAL
+        name: RDATA
         access: [read]
-    0x17:
-        name: RDATAH
-        access: [read]
+        type: uint16
     0x18:
-        name: GDATAL
+        name: GDATA
         access: [read]
-    0x19:
-        name: GDATAH
-        access: [read]
+        type: uint16
     0x1a:
-        name: BDATAL
+        name: BDATA
         access: [read]
-    0x1b:
-        name: BDATAH
-        access: [read]
+        type: uint16
 
 meta:       
   i2c_ddl_version: 1

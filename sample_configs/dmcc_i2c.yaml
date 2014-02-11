@@ -3,6 +3,15 @@ url: "https://github.com/Exadler/DMCC_Library"
 version: 6
 addresses: [0x2c,0x2d,0x2e,0x2f]
 
+# A DMCC will lock up the I2C bus if multi-byte data calls are made.
+# This is not a probem for data integrity, as the registers are only refreshed 
+# after an explicit write to the Execute register is made.
+protocol:
+    multi: False
+
+command:
+    default: 0x00
+
 registers:
     0x00:    
       name: Status

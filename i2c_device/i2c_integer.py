@@ -21,9 +21,13 @@ class IntegerReg(I2CRegister):
 
     def read(self):
         value = 0
-        for i in reversed(range(self.bytes)):
-            value <<= 8
-            value += self.read_byte(byte=i)
+        # TODO: test block reads w/auto_inc for int32?
+        if self.device.multi and (self.bytes == 2):
+            value = self.device.read_word(self.address)
+        else:
+            for i in reversed(range(self.bytes)):
+                value <<= 8
+                value += self.read_byte(byte=i)
         # test highest bit
         if self.signed and value >> (self.bits-1):
             # two's compliment

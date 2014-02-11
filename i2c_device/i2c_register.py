@@ -7,6 +7,7 @@ class I2CRegister(object):
 
     def __init__(self, device, address, config):
         self.address = address  # register address
+        self.device = device
         self.read_byte = lambda byte=0: device.read_byte(self.address+byte)
         self.write_byte = lambda value,byte=0: device.write_byte(self.address+byte, value)
         self.config = config

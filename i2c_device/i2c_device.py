@@ -26,6 +26,18 @@ class I2CDevice(object):
 
     def process_config(self, config):
         self.name = config['name']
+
+        # multi-byte read/write support
+        try:
+            self.multi = config['protocol']['multi']
+        except KeyError:
+            self.multi = False
+
+        try:
+            self.comm_base = config['command']['default']
+        except KeyError:
+            self.comm_base = 0
+
         self.registers = {}
         for reg_addr,reg_conf in config['registers'].items():
             name = reg_conf['name']
@@ -49,11 +61,26 @@ class I2CDevice(object):
                 self.registers[name] = I2CRegister(self.bus,reg_addr,reg_conf)
                 
     def read_byte(self, register):
-        return self.bus.read_byte_data(self.address, register)
+        comm = register | self.comm_base
+        # TODO: how does this two call sequence compare to read_byte_data(reg,comm)?
+        self.bus.write_byte(self.address, comm)  # tell the device what we want to read
+        data = self.bus.read_byte(self.address)  # then read it
+        return data
+
+    # this doesn't work on dmcc!
+    def read_word(self, register):
+        # TODO: verify that devices needs auto_inc enabled for this to work
+        #comm = register | self.auto_inc | self.comm_base
+        comm = register | self.comm_base
+        #print " Comm: {:08b}".format(comm)
+        data = self.bus.read_word_data(self.address, comm)
+        #print " Word: {:016b}".format(data)
+        return data
 
     def write_byte(self, register, value):
+        register |= self.comm_base
         return self.bus.write_byte_data(self.address, register, value)
-
+       
     def __str__(self):
         return "I2C device at {}-{:#04x} '{}'".format(
                 self.busnum, self.address, self.config['name'] )

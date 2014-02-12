@@ -1,14 +1,16 @@
 from unittest import TestCase
 
-import sys
+import os, sys
 from mock import Mock
 
 from i2c_device import I2CDevice
 
+test_config = os.path.dirname(os.path.realpath(__file__)) + '/test.yaml'
+
 class TestInit(TestCase):
 
     def setUp(self):
-        self.i2c = I2CDevice(None,0x01,config='tests/test.yaml')
+        self.i2c = I2CDevice(None,0x01,test_config)
         self.bits = self.i2c.registers['TestBitfield'].bits
         self.bit_names = self.i2c.registers['TestBitfield'].bit_names
 
@@ -24,7 +26,7 @@ class TestInit(TestCase):
 class TestRead(TestCase):
 
     def setUp(self):
-        self.i2c = I2CDevice(None,0x01,config='tests/test.yaml')
+        self.i2c = I2CDevice(None,0x01,test_config)
 
     def set_mock_value(self, val):
         self.i2c.read_byte = Mock(return_value = val)
@@ -56,7 +58,7 @@ class TestRead(TestCase):
 class TestWrite(TestCase):
 
     def setUp(self):
-        self.i2c = I2CDevice(None,0x01,config='tests/test.yaml')
+        self.i2c = I2CDevice(None,0x01,test_config)
         self.i2c.write_byte = Mock()
 
     def set_mock_value(self, val):

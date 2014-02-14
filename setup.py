@@ -1,4 +1,5 @@
 import os
+from glob import glob
 from setuptools import setup, find_packages
 
 # Setup flags and parameters
@@ -19,11 +20,8 @@ setup(
   license='MIT',
   packages=find_packages(),
   include_package_data=True,
-  package_data={
-    pkg_name: [
-      '*.yaml'
-    ]
-  },
+  data_files = [ ('configs', glob("configs/*")) ],
+  scripts = glob("examples/*"),
   zip_safe=True,
   # NOTE: This module has been most thoroughly tested using the python-smbus
   #       library, which is NOT available via PyPI.  Install separately

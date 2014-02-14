@@ -1,5 +1,6 @@
 import smbus
 import yaml
+import os
 
 from i2c_register import I2CRegister
 from i2c_integer import IntegerReg
@@ -18,6 +19,9 @@ class I2CDevice(object):
                 print "Could not open I2C bus {}: {}".format(bus,e)
         self.address = address
         if config:
+            if not os.path.isfile(config):
+                base = os.path.abspath(os.path.dirname(__file__)) + "/.."
+                config = base + "/configs/" + config
             with file(config) as f:
                 self.config = yaml.load(f)
             if not address in self.config['addresses']:

@@ -2,11 +2,9 @@
 
 import time
 import os, sys
-topdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(topdir)
 import i2c_device
 
-dev = i2c_device.I2CDevice(1,0x19,config=topdir+'/sample_configs/lsm303dlhc_accel_i2c.yaml')
+dev = i2c_device.I2CDevice(1,0x19,config='lsm303dlhc_accel_i2c.yaml')
 print "Device:", dev
 print "Multi-byte read is:", dev.multi
 print

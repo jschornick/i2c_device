@@ -2,11 +2,11 @@
 
 import time
 import os, sys
-topdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(topdir)
+#topdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#sys.path.append(topdir)
 import i2c_device
 
-dev = i2c_device.I2CDevice(1,0x2d,config=topdir+'/sample_configs/dmcc_i2c.yaml')
+dev = i2c_device.I2CDevice(1,0x2d,config='dmcc_i2c.yaml')
 print "Device: ", dev
 
 id = dev.registers['CapeId'].read()

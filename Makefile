@@ -1,3 +1,7 @@
+VENV_DIR=~/.virtualenvs
+VENV_CONF=.venv
+VENV=$(VENV_DIR)/$(shell cat ${VENV_CONF})
+
 default: build
 
 .PHONY: build test devinst install clean
@@ -13,6 +17,10 @@ devinst:
 
 install:
 	python setup.py install
+
+venv:
+	virtualenv --clear --system-site-packages $(VENV)
+	@echo Activate with \"source $(VENV)/bin/activate\"
 
 clean:
 	rm -rf build *.egg *.egg-info

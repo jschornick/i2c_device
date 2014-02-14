@@ -63,8 +63,9 @@ class I2CDevice(object):
     def read_byte(self, register):
         comm = register | self.comm_base
         # TODO: how does this two call sequence compare to read_byte_data(reg,comm)?
-        self.bus.write_byte(self.address, comm)  # tell the device what we want to read
-        data = self.bus.read_byte(self.address)  # then read it
+        #self.bus.write_byte(self.address, comm)  # tell the device what we want to read
+        #data = self.bus.read_byte(self.address)  # then read it
+        data = self.bus.read_byte_data(self.address, comm)
         return data
 
     # this doesn't work on dmcc!

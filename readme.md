@@ -66,3 +66,20 @@ maintain a certain amount of clarity/conciseness in the format while still
 supporting the diversity of I2C devices available.  The best way to find out is
 to start populating the libray of devices and see what problems arise.  
 
+
+Requirements
+------------
+
+_I2C_Device_ is a layer on top of the lower level I2C/smbus library, which is
+itself a Python wrapper around a the C smbus library.  The python library
+comes in two flavors: the original C-extension (_python-smbus_) or the newer
+PyPy-compatible CFFI version (_smbus-cffi_).
+
+The original extension faster and has been tested against more thoroughly.
+Most distributions include this as "python-smbus" in their package 
+repositories, or it is available here:
+
+  http://www.lm-sensors.org/browser/i2c-tools/trunk/py-smbus/
+
+If you want to try smbus-cffi, it is availble on PyPI.  
+

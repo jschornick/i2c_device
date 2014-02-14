@@ -11,7 +11,7 @@ readme = open('readme.md').read()
 setup(
   name=pkg_name,
   version='0.1',
-  description='I2C device configuration library for Python',
+  description='I2C device configuration library',
   long_description=readme,
   url='https://github.com/jschornick/i2c_device',
   author='Jeff Schornick',
@@ -25,8 +25,15 @@ setup(
     ]
   },
   zip_safe=True,
+  # NOTE: This module has been most thoroughly tested using the python-smbus
+  #       library, which is NOT available via PyPI.  Install separately
+  #       via your favorite package manager or from the source:
+  #       http://www.lm-sensors.org/browser/i2c-tools/trunk/py-smbus/
+  #
+  #       Alternately, try using smbus-cffi below, which just might work, but
+  #       is definitely slower.
   install_requires=[
-    'smbus',
+    #'smbus-cffi',
     'PyYAML'
   ],
   test_suite=(pkg_name + '.tests'),

@@ -50,7 +50,7 @@ class I2CDevice(object):
             except KeyError:
                 reg_type = None
 
-            # Since reg_conf has a type, should we do this parsing in 
+            # Since reg_conf has a type, should we do this parsing in
             # the generic Register class instead of here?
             if reg_type in ['int8', 'int16', 'int32']:
                 self.registers[name] = IntegerReg(self,reg_addr,reg_conf)
@@ -63,7 +63,7 @@ class I2CDevice(object):
             else:
                 print "WARNING: No type specified for {:#04x}".format(reg_addr)
                 self.registers[name] = I2CRegister(self.bus,reg_addr,reg_conf)
-                
+
     def read_byte(self, register):
         comm = register | self.comm_base
         # TODO: how does this two call sequence compare to read_byte_data(reg,comm)?
@@ -85,7 +85,7 @@ class I2CDevice(object):
     def write_byte(self, register, value):
         register |= self.comm_base
         return self.bus.write_byte_data(self.address, register, value)
-       
+
     def __str__(self):
         return "I2C device at {}-{:#04x} '{}'".format(
                 self.busnum, self.address, self.config['name'] )

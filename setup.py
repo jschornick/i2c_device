@@ -35,6 +35,7 @@ setup(
     'PyYAML'
   ],
   test_suite=(pkg_name + '.tests'),
+  tests_require=['mock'],
   platforms='any',
   keywords='i2c device abstraction development utilities tools',
   classifiers=[

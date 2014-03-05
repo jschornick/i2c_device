@@ -20,9 +20,9 @@ setup(
   license='MIT',
   packages=find_packages(),
   include_package_data=True,
+  zip_safe=False,
   data_files = [ ('configs', glob("configs/*")) ],
   scripts = glob("examples/*"),
-  zip_safe=True,
   # NOTE: This module has been most thoroughly tested using the python-smbus
   #       library, which is NOT available via PyPI.  Install separately
   #       via your favorite package manager or from the source:
